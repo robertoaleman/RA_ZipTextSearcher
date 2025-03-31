@@ -1,2 +1,91 @@
-# RA_ZipTextSearcher
-This class provides functionality to search for a specific string within text-based files inside a ZIP archive using native PHP functions.
+<h1>Class  RA_ZipTextSearcher</h1>
+ <h2>RA_ZipTextSearcher by Roberto Aleman, <a href="ventics.com">ventics.com</a></h2>
+<p>Author's Notes:
+<ul>
+<li>Please read the attached <a href="documentation.html">documentation.</a></li>
+<li>My code can recursively search within the entire .zip for all text files it finds.</li>
+
+<li>If you require further explanation, I can assist you based on my availability and at an hourly rate.</li>
+
+<li>If you need to implement this version or an advanced and/or customized version of my code in your system, I can assist you based on my availability and at an hourly rate.</li>
+
+<li>Please write to me and we'll discuss.</li>
+
+<li>Do you need advice to implement an IT project, develop an algorithm to solve a real-world problem in your business, factory, or company?
+Write me right now and I'll advise you.</li>
+
+<li>My project works well for all types of plain text files, txt, source code files, among others. However, it may not work well for very large files, so an additional implementation may be required.
+Please write to me and we'll talk.</li>
+
+<li>For now it does not work with Office files, .doc, .docx, .ppt or .pptx, but I could expand it later.</li>
+<h3>RA_ZipTextSearcher by Roberto Aleman, <a href="https://ventics.com">ventics.com</a></h3>
+<p class=""><strong>Documentation Class <code>RA_ZipTextSearcher</code>:</strong></p>
+<ol class="">
+ 	<li class="">
+<p class=""><strong>Directory Definition:</strong> <code>$zipDirectory = 'zips/';</code> defines the directory where your ZIP files should be placed. Make sure to create this directory in the same location as your PHP script.</p>
+</li>
+ 	<li class="">
+<p class=""><strong>Get ZIP Files:</strong> <code>glob($zipDirectory . '*.zip')</code> finds all files ending with <code>.zip</code> in the <code>/zips</code> directory and stores them in the <code>$zipFiles</code> array.</p>
+</li>
+ 	<li class="">
+<p class=""><strong>Form Structure:</strong></p>
+
+<ul class="">
+ 	<li class="">A basic HTML form with the <code>method="post"</code> and <code>action=""</code> (submits to the same script).</li>
+ 	<li class=""><strong>Search String Input:</strong> An <code>&lt;input type="text"&gt;</code> with the name <code>search_text</code>. The <code>value</code> attribute is populated with the previously entered search string (if any) using <code>htmlspecialchars()</code> for security.</li>
+ 	<li class=""><strong>ZIP File Select Dropdown:</strong> A <code>&lt;select&gt;</code> element with the name <code>zip_file</code>.
+<ul class="">
+ 	<li class="">The first <code>&lt;option&gt;</code> is a default "Select a ZIP File" option.</li>
+ 	<li class="">A PHP loop iterates through the <code>$zipFiles</code> array and creates an <code>&lt;option&gt;</code> for each ZIP file. The value of each option is the full path to the ZIP file, and the displayed text is just the filename (using <code>basename()</code>).</li>
+</ul>
+</li>
+ 	<li class=""><strong>Search Button:</strong> A <code>&lt;button type="submit"&gt;</code> to submit the form.</li>
+</ul>
+</li>
+ 	<li class="">
+<p class=""><strong>Form Submission Handling (<code>if ($_SERVER['REQUEST_METHOD'] === 'POST')</code>)</strong>:</p>
+
+<ul class="">
+ 	<li class="">Checks if the form has been submitted using the POST method.</li>
+ 	<li class=""><strong>Get Search String:</strong> Retrieves the value of the <code>search_text</code> input using <code>$_POST['search_text']</code> and trims any leading or trailing spaces using <code>trim()</code>.</li>
+ 	<li class=""><strong>Get Selected ZIP File:</strong> Retrieves the value of the <code>zip_file</code> select dropdown using <code>$_POST['zip_file']</code>.</li>
+ 	<li class=""><strong>Validation:</strong> Checks if both the search string and a ZIP file have been selected and if the selected file is actually in the <code>$zipFiles</code> array.</li>
+ 	<li class=""><strong>Instantiation and Search:</strong> If the validation passes:
+<ul class="">
+ 	<li class="">A new instance of the <code>ZipTextSearcher</code> class is created with the path to the selected ZIP file.</li>
+ 	<li class="">The <code>searchInZip()</code> method is called with the trimmed search string.</li>
+</ul>
+</li>
+ 	<li class=""><strong>Error Handling:</strong> A <code>try...catch</code> block is used to handle the <code>InvalidArgumentException</code> that might be thrown by the <code>ZipTextSearcher</code> constructor if the ZIP file is invalid.</li>
+ 	<li class=""><strong>Empty Input Error:</strong> If the search string or ZIP file is not selected, an error message is set.</li>
+</ul>
+</li>
+ 	<li class="">
+<p class=""><strong>Displaying Results:</strong></p>
+
+<ul class="">
+ 	<li class="">After processing the form, the script checks if there were any errors and displays them in a red <code>&lt;p&gt;</code> tag.</li>
+ 	<li class="">If the search was performed (<code>$searchResults</code> is not empty and the form was submitted correctly), a "Search Results" section is displayed.</li>
+ 	<li class="">It iterates through the <code>$searchResults</code> array and shows the filename and the lines where the search string was found.</li>
+ 	<li class="">If no matches were found, a "No matches found" message is displayed.</li>
+</ul>
+</li>
+ 	<li class="">
+<p class=""><strong>Displaying the Report:</strong></p>
+
+<ul class="">
+ 	<li class="">Finally, if a <code>$zipSearcher</code> object was successfully created (meaning a valid ZIP file was processed), the <code>generateReport()</code> method is called to display the search report.</li>
+</ul>
+</li>
+</ol>
+<p class=""><strong>To Use This:</strong></p>
+
+<ol class="">
+ 	<li class=""><strong>Save the code:</strong> Save the entire code (including the class definition and the HTML/PHP section) as a <code>.php</code> file (e.g., <code>zip_search.php</code>).</li>
+ 	<li class=""><strong>Create the <code>zips</code> directory:</strong> In the same directory where you saved the <code>zip_search.php</code> file, create a new directory named <code>zips</code>.</li>
+ 	<li class=""><strong>Place your ZIP files:</strong> Put the <code>.zip</code> files you want to search within into the <code>/zips</code> directory.</li>
+ 	<li class=""><strong>Access in your browser:</strong> Open the <code>zip_search.php</code> file in your web browser. You should see the form with the dropdown list of your ZIP files.</li>
+ 	<li class=""><strong>Enter search string and select file:</strong> Enter the text you want to find in the "Search String" field, choose a ZIP file from the dropdown, and click the "Search" button.</li>
+ 	<li class=""><strong>View results and report:</strong> The search results (if any) and the search report will be displayed below the form.</li>
+</ol>
+<p class="">Remember to ensure that your web server has the necessary permissions to read files in the <code>/zips</code> directory.</p>
